@@ -1,0 +1,4 @@
+﻿  Students.cpp
+  Students.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  Students.vcxproj -> C:\Users\Alpha7\Documents\Visual Studio 2015\Projects\Students\Debug\Students.exe
+  Students.vcxproj -> C:\Users\Alpha7\Documents\Visual Studio 2015\Projects\Students\Debug\Students.pdb (Partial PDB)
