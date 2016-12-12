@@ -1,6 +1,22 @@
 #pragma once
+#include "sqlite3.h"
+#include "stdlib.h"
+#include <stdio.h>
 #include <string>
+#include <msclr\marshal_cppstd.h>
 
+char output[100];
+
+static int callback(void *data, int argc, char **argv, char **azColName) {
+	int i;
+	fprintf(stderr, "%s: ", (const char*)data);
+	for (i = 0; i<argc; i++) {
+		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+		output[i] = *(*argv) + *(*azColName);
+	}
+	printf("\n");
+	return 0;
+}
 
 
 
@@ -186,6 +202,7 @@ namespace Advisors {
 			// 
 			// StudentInfoTextBox
 			// 
+			this->StudentInfoTextBox->Cursor = System::Windows::Forms::Cursors::IBeam;
 			this->StudentInfoTextBox->Enabled = false;
 			this->StudentInfoTextBox->Location = System::Drawing::Point(322, 36);
 			this->StudentInfoTextBox->Name = L"StudentInfoTextBox";
@@ -205,6 +222,7 @@ namespace Advisors {
 			this->ConfirmBTN->TabIndex = 10;
 			this->ConfirmBTN->Text = L"Confirm ";
 			this->ConfirmBTN->UseVisualStyleBackColor = true;
+			this->ConfirmBTN->Click += gcnew System::EventHandler(this, &Advisors::ConfirmBTN_Click);
 			// 
 			// CancelBTN
 			// 
@@ -301,7 +319,7 @@ namespace Advisors {
 			this->IncorrectLabel->Enabled = false;
 			this->IncorrectLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->IncorrectLabel->Location = System::Drawing::Point(93, 117);
+			this->IncorrectLabel->Location = System::Drawing::Point(93, 106);
 			this->IncorrectLabel->Name = L"IncorrectLabel";
 			this->IncorrectLabel->Size = System::Drawing::Size(132, 24);
 			this->IncorrectLabel->TabIndex = 19;
@@ -386,6 +404,46 @@ private: System::Void CheckTimeBTN_Click(System::Object^  sender, System::EventA
 
 }
 private: System::Void Advisors_Load(System::Object^  sender, System::EventArgs^  e) {
+}
+private: System::Void ConfirmBTN_Click(System::Object^  sender, System::EventArgs^  e) {
+	using namespace std;
+
+		sqlite3 *db;
+		char *zErrMsg = 0;
+		int rc;
+		char *sql;
+		const char* data = "Callback function called";
+
+		String^ DateTime = TimeDropDown->Text;
+		string strDateTime = msclr::interop::marshal_as<std::string>(DateTime);
+
+		/* Open database */
+		rc = sqlite3_open("APPOINTMENTS.db", &db);
+		if (rc) {
+			fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+			MessageBox::Show("CANT OPEN DATABASE");
+			return;
+		}
+		else {
+			fprintf(stderr, "Opened database successfully\n");
+		}
+
+		/* Create SQL statement */
+		sql = "Select * from apps where datetime like '11'";
+
+		/* Execute SQL statement */
+		rc = sqlite3_exec(db, sql, callback, (void*)data, &zErrMsg);
+		if (rc != SQLITE_OK) {
+			fprintf(stderr, "SQL error: %s\n", zErrMsg);
+			sqlite3_free(zErrMsg);
+		}
+		else {
+			fprintf(stdout, "Operation done successfully\n");
+		}
+		sqlite3_close(db);
+		for(int i = 0; i < 100; i++)
+		StudentInfoTextBox->Text += Convert::ToString(output[i]);
+		return;
 }
 };
 }
