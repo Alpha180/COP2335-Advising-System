@@ -1,5 +1,4 @@
 ﻿  Students.cpp
   Students.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
-Students.obj : warning LNK4248: unresolved typeref token (0100002C) for 'sqlite3'; image may not run
-  Students.vcxproj -> C:\Users\Enano\Documents\Visual Studio 2015\Projects\Students\x64\Debug\Students.exe
-  Students.vcxproj -> C:\Users\Enano\Documents\Visual Studio 2015\Projects\Students\x64\Debug\Students.pdb (Partial PDB)
+  Students.vcxproj -> C:\Users\Alpha7\Desktop\derp\COP2335-Advising-System-master\Students\x64\Debug\Students.exe
+  Students.vcxproj -> C:\Users\Alpha7\Desktop\derp\COP2335-Advising-System-master\Students\x64\Debug\Students.pdb (Partial PDB)

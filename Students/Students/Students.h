@@ -1,20 +1,4 @@
 #pragma once
-#include "sqlite3.h"
-#include "stdlib.h"
-#include <stdio.h>
-#include <string>
-#include <msclr\marshal_cppstd.h>
-
-
-
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
-	int i;
-	for (i = 0; i<argc; i++) {
-		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-	}
-	printf("\n");
-	return 0;
-}
 
 namespace Students {
 
@@ -86,6 +70,8 @@ namespace Students {
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::TextBox^  emailBox;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::Label^  timeLbl;
+	private: System::Windows::Forms::ComboBox^  timeDrop;
 
 
 	private:
@@ -123,6 +109,8 @@ namespace Students {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->emailBox = (gcnew System::Windows::Forms::TextBox());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->timeLbl = (gcnew System::Windows::Forms::Label());
+			this->timeDrop = (gcnew System::Windows::Forms::ComboBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -155,7 +143,7 @@ namespace Students {
 			this->nameText->Location = System::Drawing::Point(12, 32);
 			this->nameText->MaxLength = 35;
 			this->nameText->Name = L"nameText";
-			this->nameText->Size = System::Drawing::Size(251, 20);
+			this->nameText->Size = System::Drawing::Size(227, 20);
 			this->nameText->TabIndex = 15;
 			this->nameText->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Students::nameText_KeyPress);
 			// 
@@ -175,7 +163,7 @@ namespace Students {
 			this->IDText->Location = System::Drawing::Point(12, 88);
 			this->IDText->MaxLength = 10;
 			this->IDText->Name = L"IDText";
-			this->IDText->Size = System::Drawing::Size(251, 20);
+			this->IDText->Size = System::Drawing::Size(227, 20);
 			this->IDText->TabIndex = 17;
 			this->IDText->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Students::IDText_KeyPress);
 			// 
@@ -195,7 +183,7 @@ namespace Students {
 			this->NumberText->Location = System::Drawing::Point(12, 148);
 			this->NumberText->MaxLength = 10;
 			this->NumberText->Name = L"NumberText";
-			this->NumberText->Size = System::Drawing::Size(251, 20);
+			this->NumberText->Size = System::Drawing::Size(227, 20);
 			this->NumberText->TabIndex = 19;
 			this->NumberText->KeyPress += gcnew System::Windows::Forms::KeyPressEventHandler(this, &Students::IDText_KeyPress);
 			// 
@@ -204,11 +192,11 @@ namespace Students {
 			this->label4->AutoSize = true;
 			this->label4->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label4->Location = System::Drawing::Point(12, 245);
+			this->label4->Location = System::Drawing::Point(8, 245);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(302, 20);
+			this->label4->Size = System::Drawing::Size(224, 20);
 			this->label4->TabIndex = 20;
-			this->label4->Text = L"Please Select Date and Time of Visit";
+			this->label4->Text = L"Please Select Date of Visit";
 			// 
 			// Calender
 			// 
@@ -277,7 +265,7 @@ namespace Students {
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label8->Location = System::Drawing::Point(551, 193);
+			this->label8->Location = System::Drawing::Point(551, 228);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(301, 40);
 			this->label8->TabIndex = 28;
@@ -285,10 +273,10 @@ namespace Students {
 			// 
 			// richBox
 			// 
-			this->richBox->Location = System::Drawing::Point(486, 248);
+			this->richBox->Location = System::Drawing::Point(548, 276);
 			this->richBox->MaxLength = 1000;
 			this->richBox->Name = L"richBox";
-			this->richBox->Size = System::Drawing::Size(366, 116);
+			this->richBox->Size = System::Drawing::Size(304, 116);
 			this->richBox->TabIndex = 29;
 			this->richBox->Text = L"";
 			// 
@@ -296,7 +284,7 @@ namespace Students {
 			// 
 			this->cancelBut->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->cancelBut->Location = System::Drawing::Point(759, 380);
+			this->cancelBut->Location = System::Drawing::Point(759, 408);
 			this->cancelBut->Name = L"cancelBut";
 			this->cancelBut->Size = System::Drawing::Size(93, 40);
 			this->cancelBut->TabIndex = 30;
@@ -308,7 +296,7 @@ namespace Students {
 			// 
 			this->confirmBut->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->confirmBut->Location = System::Drawing::Point(486, 380);
+			this->confirmBut->Location = System::Drawing::Point(548, 408);
 			this->confirmBut->Name = L"confirmBut";
 			this->confirmBut->Size = System::Drawing::Size(93, 40);
 			this->confirmBut->TabIndex = 31;
@@ -332,23 +320,49 @@ namespace Students {
 			this->emailBox->Location = System::Drawing::Point(12, 205);
 			this->emailBox->MaxLength = 30;
 			this->emailBox->Name = L"emailBox";
-			this->emailBox->Size = System::Drawing::Size(251, 20);
+			this->emailBox->Size = System::Drawing::Size(227, 20);
 			this->emailBox->TabIndex = 33;
 			// 
 			// pictureBox1
 			// 
 			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			this->pictureBox1->Location = System::Drawing::Point(313, 32);
+			this->pictureBox1->Location = System::Drawing::Point(304, 88);
 			this->pictureBox1->Name = L"pictureBox1";
 			this->pictureBox1->Size = System::Drawing::Size(216, 201);
 			this->pictureBox1->TabIndex = 34;
 			this->pictureBox1->TabStop = false;
+			// 
+			// timeLbl
+			// 
+			this->timeLbl->AutoSize = true;
+			this->timeLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->timeLbl->Location = System::Drawing::Point(649, 174);
+			this->timeLbl->Name = L"timeLbl";
+			this->timeLbl->Size = System::Drawing::Size(103, 20);
+			this->timeLbl->TabIndex = 35;
+			this->timeLbl->Text = L"Select Time";
+			// 
+			// timeDrop
+			// 
+			this->timeDrop->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->timeDrop->FormattingEnabled = true;
+			this->timeDrop->Items->AddRange(gcnew cli::array< System::Object^  >(5) {
+				L"10:00 AM", L"11:00 AM", L"12:00 PM", L"01:00 PM",
+					L"02:00 PM"
+			});
+			this->timeDrop->Location = System::Drawing::Point(548, 197);
+			this->timeDrop->Name = L"timeDrop";
+			this->timeDrop->Size = System::Drawing::Size(304, 21);
+			this->timeDrop->TabIndex = 36;
 			// 
 			// Students
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(864, 454);
+			this->Controls->Add(this->timeDrop);
+			this->Controls->Add(this->timeLbl);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->emailBox);
 			this->Controls->Add(this->label1);
@@ -382,6 +396,15 @@ namespace Students {
 private: System::Void IDText_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) 
 {
 
+	if (e->KeyChar < '0' || e->KeyChar >'9')
+	{
+		if (!(e->KeyChar == 8) && (e->KeyChar != '-'))
+		{
+			MessageBox::Show("Please enter numbers only!");
+			e->KeyChar = (char)0;
+		}
+	}
+
 }
 
 private: System::Void nameText_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) 
@@ -408,60 +431,72 @@ private: System::Void cancelBut_Click(System::Object^  sender, System::EventArgs
      
 private: System::Void confirmBut_Click(System::Object^  sender, System::EventArgs^  e) 
 {
-	using namespace std;
 
-	static int id = 1;
-	string strPrimarykey = std::to_string(id);
+	if (nameText->Text == "")
+	{
 
-	String^ name = nameText->Text;
-	string strName = msclr::interop::marshal_as<std::string>(name);
-	String^ sid = IDText->Text;
-	string strSid = msclr::interop::marshal_as<std::string>(sid);
-	String^ phone = NumberText->Text;
-	string strPhone = msclr::interop::marshal_as<std::string>(phone);
-	String^ email = emailBox->Text;
-	string strEmail = msclr::interop::marshal_as<std::string>(email);
-	String^ program = programDrop->Text;
-	string strProgram = msclr::interop::marshal_as<std::string>(program);
-	String^ reason = visitDrop->Text;
-	string strReason = msclr::interop::marshal_as<std::string>(reason);
-	String^ advisor = advisorDrop->Text;
-	string strAdvisor = msclr::interop::marshal_as<std::string>(advisor);
-	String^ DateTime = Calender->Text;
-	string strDateTime = msclr::interop::marshal_as<std::string>(DateTime);
+		MessageBox::Show("There are fields that are incomplete.");
 
-	string finalString =  "INSERT INTO APPOINTMENTS (ID,NAME,SID,PHONE,EMAIL,PROGRAM,REASON,ADVISOR,DATETIME) VALUES (" + strName + "," + strSid + "," + strPhone + "," + strEmail + "," + strProgram + "," + strReason + "," + strAdvisor + "," + strDateTime+ ");";
-		
-		sqlite3 *db;
-		char *zErrMsg = 0;
-		int rc;
-		char *sql;
-
-		/* Open database */
-		rc = sqlite3_open("APPOINTMENTS.db", &db);
-		if (rc) {
-			fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
-			return;
-		}
-		else {
-			fprintf(stderr, "Opened database successfully\n");
-		}
-
-		/* Create SQL statement */
-		sql = (char*)finalString.c_str();
-
-			/* Execute SQL statement */
-		rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
-		if (rc != SQLITE_OK) {
-			MessageBox::Show("error");
-			sqlite3_free(zErrMsg);
-		}
-		else {
-			fprintf(stdout, "Records created successfully\n");
-		}
-		sqlite3_close(db);
-		id++;
-		return;
 	}
+	else if (IDText->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else if (NumberText->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else if (emailBox->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else if (programDrop->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else if (visitDrop->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else if (advisorDrop->Text == "")
+	{
+
+		MessageBox::Show("There are fields that are incomplete.");
+
+	}
+	else
+	{
+
+		String^ Date;
+
+		Date = System::Convert::ToString(Calender->SelectionStart);
+		Date = Date->Remove(Date->Length - 11, 11);
+
+		String^ name = nameText->Text;
+		String^ sid = IDText->Text;
+		String^ phone = NumberText->Text;
+		String^ email = emailBox->Text;
+		String^ program = programDrop->Text;
+		String^ reason = visitDrop->Text;
+		String^ advisor = advisorDrop->Text;
+		String^ rich = richBox->Text;
+		String^ time = timeDrop->Text;
+
+		MessageBox::Show("An appointment has been made for " + name + "\n \n" + "Name: " + name + "\n \n" + "ID: " + sid + "\n \n" + "Phone Number: " + phone + "\n \n" + "Email: " + email + "\n \n" + "Program of Study: " + program + "\n \n"
+			+ "Reason for apoointment: " + reason + "\n \n" + "Advisor: " + advisor + "\n \n" + "Date: " + Date + "\n \n" + "Time: " + time + "\n \n" + "Comment: " + rich);
+
+	}
+}
+
 };
 }
