@@ -103,7 +103,9 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>sqlite3.lib</AdditionalDependencies>
+      <EntryPointSymbol>Main</EntryPointSymbol>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -135,6 +137,7 @@
     <ClCompile Include="Students.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="sqlite3.h" />
     <ClInclude Include="Students.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -143,6 +146,9 @@
     <EmbeddedResource Include="Students.resx">
       <DependentUpon>Students.h</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="sqlite3.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

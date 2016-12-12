@@ -1,4 +1,20 @@
 #pragma once
+#include "sqlite3.h"
+#include "stdlib.h"
+#include <stdio.h>
+#include <string>
+#include <msclr\marshal_cppstd.h>
+
+
+
+static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+	int i;
+	for (i = 0; i<argc; i++) {
+		printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+	}
+	printf("\n");
+	return 0;
+}
 
 namespace Students {
 
@@ -366,15 +382,6 @@ namespace Students {
 private: System::Void IDText_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) 
 {
 
-	if (e->KeyChar < '0' || e->KeyChar >'9')
-	{
-		if (!(e->KeyChar == 8) && (e->KeyChar != '-'))
-		{
-			MessageBox::Show("Please enter numbers only!");
-			e->KeyChar = (char)0;
-		}
-	}
-
 }
 
 private: System::Void nameText_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) 
@@ -401,9 +408,60 @@ private: System::Void cancelBut_Click(System::Object^  sender, System::EventArgs
      
 private: System::Void confirmBut_Click(System::Object^  sender, System::EventArgs^  e) 
 {
+	using namespace std;
 
-	
-}
+	static int id = 1;
+	string strPrimarykey = std::to_string(id);
 
+	String^ name = nameText->Text;
+	string strName = msclr::interop::marshal_as<std::string>(name);
+	String^ sid = IDText->Text;
+	string strSid = msclr::interop::marshal_as<std::string>(sid);
+	String^ phone = NumberText->Text;
+	string strPhone = msclr::interop::marshal_as<std::string>(phone);
+	String^ email = emailBox->Text;
+	string strEmail = msclr::interop::marshal_as<std::string>(email);
+	String^ program = programDrop->Text;
+	string strProgram = msclr::interop::marshal_as<std::string>(program);
+	String^ reason = visitDrop->Text;
+	string strReason = msclr::interop::marshal_as<std::string>(reason);
+	String^ advisor = advisorDrop->Text;
+	string strAdvisor = msclr::interop::marshal_as<std::string>(advisor);
+	String^ DateTime = Calender->Text;
+	string strDateTime = msclr::interop::marshal_as<std::string>(DateTime);
+
+	string finalString =  "INSERT INTO APPOINTMENTS (ID,NAME,SID,PHONE,EMAIL,PROGRAM,REASON,ADVISOR,DATETIME) VALUES (" + strName + "," + strSid + "," + strPhone + "," + strEmail + "," + strProgram + "," + strReason + "," + strAdvisor + "," + strDateTime+ ");";
+		
+		sqlite3 *db;
+		char *zErrMsg = 0;
+		int rc;
+		char *sql;
+
+		/* Open database */
+		rc = sqlite3_open("APPOINTMENTS.db", &db);
+		if (rc) {
+			fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
+			return;
+		}
+		else {
+			fprintf(stderr, "Opened database successfully\n");
+		}
+
+		/* Create SQL statement */
+		sql = (char*)finalString.c_str();
+
+			/* Execute SQL statement */
+		rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+		if (rc != SQLITE_OK) {
+			MessageBox::Show("error");
+			sqlite3_free(zErrMsg);
+		}
+		else {
+			fprintf(stdout, "Records created successfully\n");
+		}
+		sqlite3_close(db);
+		id++;
+		return;
+	}
 };
 }
