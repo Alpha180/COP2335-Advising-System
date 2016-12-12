@@ -1,5 +1,4 @@
 ﻿  Advisors.cpp
   Advisors.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
-Advisors.obj : warning LNK4248: unresolved typeref token (0100002B) for 'sqlite3'; image may not run
-  Advisors.vcxproj -> C:\Users\Enano\Desktop\Advisors\x64\Debug\Advisors.exe
-  Advisors.vcxproj -> C:\Users\Enano\Desktop\Advisors\x64\Debug\Advisors.pdb (Partial PDB)
+  Advisors.vcxproj -> C:\Users\Enano\Documents\Visual Studio 2015\Projects\Advisors\x64\Debug\Advisors.exe
+  Advisors.vcxproj -> C:\Users\Enano\Documents\Visual Studio 2015\Projects\Advisors\x64\Debug\Advisors.pdb (Partial PDB)

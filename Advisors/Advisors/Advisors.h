@@ -5,9 +5,10 @@
 #include <string>
 #include <msclr\marshal_cppstd.h>
 
-char output[100];
+//std::string output[100];
+//char *outputchar[100000];
 
-static int callback(void *data, int argc, char **argv, char **azColName) {
+/*static int callback(void *data, int argc, char **argv, char **azColName) {
 	int i;
 	fprintf(stderr, "%s: ", (const char*)data);
 	for (i = 0; i<argc; i++) {
@@ -17,7 +18,7 @@ static int callback(void *data, int argc, char **argv, char **azColName) {
 	printf("\n");
 	return 0;
 }
-
+*/
 
 
 namespace Advisors {
@@ -406,8 +407,11 @@ private: System::Void CheckTimeBTN_Click(System::Object^  sender, System::EventA
 private: System::Void Advisors_Load(System::Object^  sender, System::EventArgs^  e) {
 }
 private: System::Void ConfirmBTN_Click(System::Object^  sender, System::EventArgs^  e) {
-	using namespace std;
+	
+	StudentInfoTextBox->Text = Calendar->Text + "\n" + TimeDropDown->Text + "\n" + "Jane Doe\n4536573454\n7865556543\nJane.Doe@hotmail.com\nMAGIC\nGeneral Questions\nPablo Escobar";
 
+	/*
+		using namespace std;
 		sqlite3 *db;
 		char *zErrMsg = 0;
 		int rc;
@@ -417,7 +421,7 @@ private: System::Void ConfirmBTN_Click(System::Object^  sender, System::EventArg
 		String^ DateTime = TimeDropDown->Text;
 		string strDateTime = msclr::interop::marshal_as<std::string>(DateTime);
 
-		/* Open database */
+		/* Open database */ /*
 		rc = sqlite3_open("APPOINTMENTS.db", &db);
 		if (rc) {
 			fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
@@ -428,10 +432,10 @@ private: System::Void ConfirmBTN_Click(System::Object^  sender, System::EventArg
 			fprintf(stderr, "Opened database successfully\n");
 		}
 
-		/* Create SQL statement */
+		/* Create SQL statement *//*
 		sql = "Select * from apps where datetime like '11'";
 
-		/* Execute SQL statement */
+		/* Execute SQL statement */ /*
 		rc = sqlite3_exec(db, sql, callback, (void*)data, &zErrMsg);
 		if (rc != SQLITE_OK) {
 			fprintf(stderr, "SQL error: %s\n", zErrMsg);
@@ -441,9 +445,14 @@ private: System::Void ConfirmBTN_Click(System::Object^  sender, System::EventArg
 			fprintf(stdout, "Operation done successfully\n");
 		}
 		sqlite3_close(db);
-		for(int i = 0; i < 100; i++)
-		StudentInfoTextBox->Text += Convert::ToString(output[i]);
+		for (int i = 0; i < 100; i++) {
+
+			strcpy(outputchar[i], output[i].c_str());
+			MessageBox::Show(Convert::ToString(outputchar[i]));
+			//StudentInfoTextBox->Text += Convert::ToString(output[i]);
+		}
 		return;
+		*/
 }
 };
 }
